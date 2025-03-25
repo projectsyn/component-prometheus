@@ -26515,14 +26515,6 @@ items:
                         "refresh": 2,
                         "sort": 1,
                         "type": "query"
-                    },
-                    {
-                        "datasource": {
-                            "type": "prometheus",
-                            "uid": "${datasource}"
-                        },
-                        "refresh": 2,
-                        "sort": 1
                     }
                 ]
             },
