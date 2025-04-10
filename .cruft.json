@@ -7,7 +7,7 @@
       "name": "prometheus",
       "slug": "prometheus",
       "parameter_key": "prometheus",
-      "test_cases": "defaults multi rewrite-registries thanos cluster-monitoring additional_rules resourcequota kubernetes_1.25 grafana-ingress additional_nodeexporter_args additional_kubestatemetrics_args grafana-storage additional-netpols kubernetes_1.26 kubernetes_1.27 kubernetes_1.28 kubernetes_1.29 kubernetes_1.30 kubernetes_1.31",
+      "test_cases": "defaults multi rewrite-registries thanos cluster-monitoring additional_rules resourcequota kubernetes_1.25 grafana-ingress additional_nodeexporter_args additional_kubestatemetrics_args grafana-storage additional-netpols kubernetes_1.26 kubernetes_1.27 kubernetes_1.28 kubernetes_1.29 kubernetes_1.30 kubernetes_1.31 kubernetes_1.32",
       "add_lib": "y",
       "add_pp": "n",
       "add_golden": "y",
