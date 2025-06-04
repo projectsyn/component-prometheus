@@ -3,8 +3,8 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     argocd.argoproj.io/sync-options: Replace=true
-    controller-gen.kubebuilder.io/version: v0.15.0
-    operator.prometheus.io/version: 0.76.2
+    controller-gen.kubebuilder.io/version: v0.18.0
+    operator.prometheus.io/version: 0.83.0
     source: https://github.com/projectsyn/component-prometheus
   labels:
     app.kubernetes.io/managed-by: commodore
@@ -28,7 +28,6 @@ spec:
         openAPIV3Schema:
           description: |-
             The `PrometheusRule` custom resource definition (CRD) defines [alerting](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) and [recording](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) rules to be evaluated by `Prometheus` or `ThanosRuler` objects.
-
 
             `Prometheus` and `ThanosRuler` objects select `PrometheusRule` objects using label and namespace selectors.
           properties:
@@ -64,6 +63,16 @@ spec:
                           are evaluated.
                         pattern: ^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$
                         type: string
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: |-
+                          Labels to add or overwrite before storing the result for its rules.
+                          The labels defined at the rule level take precedence.
+
+                          It requires Prometheus >= 3.0.0.
+                          The field is ignored for Thanos Ruler.
+                        type: object
                       limit:
                         description: |-
                           Limit the number of alerts an alerting rule and series a recording
@@ -80,6 +89,14 @@ spec:
                           be ignored by Prometheus instances.
                           More info: https://github.com/thanos-io/thanos/blob/main/docs/components/rule.md#partial-response
                         pattern: ^(?i)(abort|warn)?$
+                        type: string
+                      query_offset:
+                        description: |-
+                          Defines the offset the rule evaluation timestamp of this particular group by the specified duration into the past.
+
+                          It requires Prometheus >= v2.53.0.
+                          It is not supported for ThanosRuler.
+                        pattern: ^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$
                         type: string
                       rules:
                         description: List of alerting and recording rules.

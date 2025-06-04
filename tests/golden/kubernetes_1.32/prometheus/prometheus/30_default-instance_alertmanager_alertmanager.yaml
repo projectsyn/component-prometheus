@@ -9,11 +9,11 @@ metadata:
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: alertmanager
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 0.27.0
+    app.kubernetes.io/version: 0.28.1
   name: alertmanager-default-instance
   namespace: syn-prometheus
 spec:
-  image: quay.io/prometheus/alertmanager:v0.27.0
+  image: quay.io/prometheus/alertmanager:v0.28.1
   nodeSelector:
     kubernetes.io/os: linux
   podMetadata:
@@ -22,7 +22,7 @@ spec:
       app.kubernetes.io/instance: alertmanager-default-instance
       app.kubernetes.io/name: alertmanager
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 0.27.0
+      app.kubernetes.io/version: 0.28.1
   replicas: 3
   resources:
     limits:
@@ -37,4 +37,4 @@ spec:
     runAsNonRoot: true
     runAsUser: 1000
   serviceAccountName: alertmanager-alertmanager-default-instance
-  version: 0.27.0
+  version: 0.28.1

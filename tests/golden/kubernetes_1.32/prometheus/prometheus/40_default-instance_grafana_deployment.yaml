@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: grafana-default-instance
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 11.2.0
+    app.kubernetes.io/version: 12.0.1
   name: grafana
   namespace: syn-prometheus
 spec:
@@ -21,19 +21,19 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/grafana-config: 881841b7875a30db732be4f030220079
-        checksum/grafana-dashboardproviders: 46f332693335319e37895b1e8619df81
-        checksum/grafana-datasources: 3abf7b5edbfb66b891d3fba3d27c9d50
+        checksum/grafana-config: 8065f8f6586dc15ca32519f31b701ae3
+        checksum/grafana-dashboardproviders: ff6b2073d01365764abbbb85179e1a5d
+        checksum/grafana-datasources: 957895bf9751222d8f43e3136a44ae78
       labels:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana-default-instance
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.2.0
+        app.kubernetes.io/version: 12.0.1
     spec:
       automountServiceAccountToken: false
       containers:
         - env: []
-          image: docker.io/grafana/grafana:11.2.0
+          image: docker.io/grafana/grafana:12.0.1
           name: grafana
           ports:
             - containerPort: 3000
@@ -100,11 +100,26 @@ spec:
             - mountPath: /grafana-dashboard-definitions/0/k8s-resources-pod
               name: grafana-dashboard-k8s-resources-pod
               readOnly: false
+            - mountPath: /grafana-dashboard-definitions/0/k8s-resources-windows-cluster
+              name: grafana-dashboard-k8s-resources-windows-cluster
+              readOnly: false
+            - mountPath: /grafana-dashboard-definitions/0/k8s-resources-windows-namespace
+              name: grafana-dashboard-k8s-resources-windows-namespace
+              readOnly: false
+            - mountPath: /grafana-dashboard-definitions/0/k8s-resources-windows-pod
+              name: grafana-dashboard-k8s-resources-windows-pod
+              readOnly: false
             - mountPath: /grafana-dashboard-definitions/0/k8s-resources-workload
               name: grafana-dashboard-k8s-resources-workload
               readOnly: false
             - mountPath: /grafana-dashboard-definitions/0/k8s-resources-workloads-namespace
               name: grafana-dashboard-k8s-resources-workloads-namespace
+              readOnly: false
+            - mountPath: /grafana-dashboard-definitions/0/k8s-windows-cluster-rsrc-use
+              name: grafana-dashboard-k8s-windows-cluster-rsrc-use
+              readOnly: false
+            - mountPath: /grafana-dashboard-definitions/0/k8s-windows-node-rsrc-use
+              name: grafana-dashboard-k8s-windows-node-rsrc-use
               readOnly: false
             - mountPath: /grafana-dashboard-definitions/0/kubelet
               name: grafana-dashboard-kubelet
@@ -120,6 +135,9 @@ spec:
               readOnly: false
             - mountPath: /grafana-dashboard-definitions/0/node-rsrc-use
               name: grafana-dashboard-node-rsrc-use
+              readOnly: false
+            - mountPath: /grafana-dashboard-definitions/0/nodes-aix
+              name: grafana-dashboard-nodes-aix
               readOnly: false
             - mountPath: /grafana-dashboard-definitions/0/nodes-darwin
               name: grafana-dashboard-nodes-darwin
@@ -202,11 +220,26 @@ spec:
             name: grafana-dashboard-k8s-resources-pod
           name: grafana-dashboard-k8s-resources-pod
         - configMap:
+            name: grafana-dashboard-k8s-resources-windows-cluster
+          name: grafana-dashboard-k8s-resources-windows-cluster
+        - configMap:
+            name: grafana-dashboard-k8s-resources-windows-namespace
+          name: grafana-dashboard-k8s-resources-windows-namespace
+        - configMap:
+            name: grafana-dashboard-k8s-resources-windows-pod
+          name: grafana-dashboard-k8s-resources-windows-pod
+        - configMap:
             name: grafana-dashboard-k8s-resources-workload
           name: grafana-dashboard-k8s-resources-workload
         - configMap:
             name: grafana-dashboard-k8s-resources-workloads-namespace
           name: grafana-dashboard-k8s-resources-workloads-namespace
+        - configMap:
+            name: grafana-dashboard-k8s-windows-cluster-rsrc-use
+          name: grafana-dashboard-k8s-windows-cluster-rsrc-use
+        - configMap:
+            name: grafana-dashboard-k8s-windows-node-rsrc-use
+          name: grafana-dashboard-k8s-windows-node-rsrc-use
         - configMap:
             name: grafana-dashboard-kubelet
           name: grafana-dashboard-kubelet
@@ -222,6 +255,9 @@ spec:
         - configMap:
             name: grafana-dashboard-node-rsrc-use
           name: grafana-dashboard-node-rsrc-use
+        - configMap:
+            name: grafana-dashboard-nodes-aix
+          name: grafana-dashboard-nodes-aix
         - configMap:
             name: grafana-dashboard-nodes-darwin
           name: grafana-dashboard-nodes-darwin

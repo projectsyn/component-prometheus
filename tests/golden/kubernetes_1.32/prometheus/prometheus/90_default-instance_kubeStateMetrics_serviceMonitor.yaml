@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: kubestatemetrics-default-instance
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 2.13.0
+    app.kubernetes.io/version: 2.15.0
   name: kubestatemetrics-default-instance
   namespace: syn-prometheus
 spec:
@@ -18,7 +18,7 @@ spec:
       interval: 30s
       metricRelabelings:
         - action: drop
-          regex: kube_endpoint_address_not_ready|kube_endpoint_address_available
+          regex: kube_(endpoint_(address_not_ready|address_available|ports))
           sourceLabels:
             - __name__
       port: https-main

@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/name: alertmanager
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 0.27.0
+    app.kubernetes.io/version: 0.28.1
     monitoring.syn.tools/enabled: 'true'
     prometheus: default-instance
     role: alert-rules
@@ -57,9 +57,9 @@ spec:
             summary: An Alertmanager instance failed to send notifications.
           expr: |
             (
-              rate(alertmanager_notifications_failed_total{job="alertmanager-alertmanager-default-instance",namespace="syn-prometheus"}[5m])
+              rate(alertmanager_notifications_failed_total{job="alertmanager-alertmanager-default-instance",namespace="syn-prometheus"}[15m])
             /
-              ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-alertmanager-default-instance",namespace="syn-prometheus"}[5m])
+              ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-alertmanager-default-instance",namespace="syn-prometheus"}[15m])
             )
             > 0.01
           for: 5m
@@ -75,9 +75,9 @@ spec:
               to a critical integration.
           expr: |
             min by (namespace,service, integration) (
-              rate(alertmanager_notifications_failed_total{job="alertmanager-alertmanager-default-instance",namespace="syn-prometheus", integration=~`.*`}[5m])
+              rate(alertmanager_notifications_failed_total{job="alertmanager-alertmanager-default-instance",namespace="syn-prometheus", integration=~`.*`}[15m])
             /
-              ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-alertmanager-default-instance",namespace="syn-prometheus", integration=~`.*`}[5m])
+              ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-alertmanager-default-instance",namespace="syn-prometheus", integration=~`.*`}[15m])
             )
             > 0.01
           for: 5m
@@ -93,9 +93,9 @@ spec:
               to a non-critical integration.
           expr: |
             min by (namespace,service, integration) (
-              rate(alertmanager_notifications_failed_total{job="alertmanager-alertmanager-default-instance",namespace="syn-prometheus", integration!~`.*`}[5m])
+              rate(alertmanager_notifications_failed_total{job="alertmanager-alertmanager-default-instance",namespace="syn-prometheus", integration!~`.*`}[15m])
             /
-              ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-alertmanager-default-instance",namespace="syn-prometheus", integration!~`.*`}[5m])
+              ignoring (reason) group_left rate(alertmanager_notifications_total{job="alertmanager-alertmanager-default-instance",namespace="syn-prometheus", integration!~`.*`}[15m])
             )
             > 0.01
           for: 5m
