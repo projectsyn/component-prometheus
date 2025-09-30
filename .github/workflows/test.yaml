@@ -39,7 +39,6 @@ jobs:
           - cluster-monitoring
           - additional_rules
           - resourcequota
-          - kubernetes_1.25
           - grafana-ingress
           - additional_nodeexporter_args
           - additional_kubestatemetrics_args
@@ -74,7 +73,6 @@ jobs:
           - cluster-monitoring
           - additional_rules
           - resourcequota
-          - kubernetes_1.25
           - grafana-ingress
           - additional_nodeexporter_args
           - additional_kubestatemetrics_args
