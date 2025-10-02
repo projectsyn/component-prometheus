@@ -49,6 +49,8 @@ parameters:
       "1.32": 68444c6b63b032a8761da09182ef63d89cc65cd5
       # renovate: branch=release-0.15
       "1.33": 68444c6b63b032a8761da09182ef63d89cc65cd5
+      # renovate: branch=release-0.16
+      "1.34": 7cf9c66d984c5f332e9ee22d03a7b09949dc8b20
 
     namespaces: {}
 
