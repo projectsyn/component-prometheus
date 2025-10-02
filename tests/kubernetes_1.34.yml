@@ -22,4 +22,3 @@ parameters:
           enabled: true
         kubePrometheus:
           enabled: true
-          
