@@ -1,0 +1,20 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-prometheus
+  labels:
+    app.kubernetes.io/component: exporter
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/name: nodeexporter-default-instance
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 1.9.1
+  name: nodeexporter-default-instance
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: nodeexporter-default-instance
+subjects:
+  - kind: ServiceAccount
+    name: nodeexporter-default-instance
+    namespace: syn-prometheus
