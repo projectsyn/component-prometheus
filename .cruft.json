@@ -1,13 +1,13 @@
 {
   "template": "https://github.com/projectsyn/commodore-component-template.git",
-  "commit": "de1ad5aa829f6a478ba4d245c080056f9305e17e",
+  "commit": "84a7c63ca26492da555344c23ccddac302ba0bb2",
   "checkout": "main",
   "context": {
     "cookiecutter": {
       "name": "prometheus",
       "slug": "prometheus",
       "parameter_key": "prometheus",
-      "test_cases": "defaults multi rewrite-registries thanos cluster-monitoring additional_rules resourcequota kubernetes_1.25 grafana-ingress additional_nodeexporter_args additional_kubestatemetrics_args grafana-storage additional-netpols kubernetes_1.26 kubernetes_1.27 kubernetes_1.28 kubernetes_1.29 kubernetes_1.30 kubernetes_1.31 kubernetes_1.32 kubernetes_1.33",
+      "test_cases": "defaults multi rewrite-registries thanos cluster-monitoring additional_rules resourcequota grafana-ingress additional_nodeexporter_args additional_kubestatemetrics_args grafana-storage additional-netpols kubernetes_1.26 kubernetes_1.27 kubernetes_1.28 kubernetes_1.29 kubernetes_1.30 kubernetes_1.31 kubernetes_1.32 kubernetes_1.33",
       "add_lib": "y",
       "add_pp": "n",
       "add_golden": "y",
@@ -25,7 +25,7 @@
       "github_name": "component-prometheus",
       "github_url": "https://github.com/projectsyn/component-prometheus",
       "_template": "https://github.com/projectsyn/commodore-component-template.git",
-      "_commit": "de1ad5aa829f6a478ba4d245c080056f9305e17e"
+      "_commit": "84a7c63ca26492da555344c23ccddac302ba0bb2"
     }
   },
   "directory": null
