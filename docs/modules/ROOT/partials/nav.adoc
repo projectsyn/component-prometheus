@@ -5,6 +5,7 @@
 ** xref:references/addon-oauth2-proxy.adoc[OAuth2 Proxy]
 ** xref:references/addon-disable-alerts.adoc[Disable Alerts]
 ** xref:references/addon-additional-rules.adoc[Additional Rules]
+** xref:references/addon-vcluster.adoc[vcluster]
 
 .How-Tos
 * xref:how-tos/prometheus.adoc[Deploy Prometheus]
