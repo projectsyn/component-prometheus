@@ -1,0 +1,45 @@
+= Addon: vcluster
+
+Adding the `vcluster` addon will disable kubelet monitoring for vcluster deployments where the kubelet is not available.
+
+On vclusters, the kubelet runs in the parent cluster and is not exposed to the vcluster.
+This addon prevents false alerts and failed scrape jobs by disabling the kubelet ServiceMonitor and filtering out kubelet-related alert rules.
+
+== Usage
+
+To enable this addon, add it to your instance configuration:
+
+[source,yaml]
+----
+parameters:
+  prometheus:
+    addons:
+      - vcluster
+    instances:
+      my-vcluster:
+        prometheus:
+          enabled: true
+        nodeExporter:
+          enabled: false
+        kubernetesControlPlane:
+          enabled: true
+----
+
+NOTE: The vcluster addon requires no additional configuration. Simply adding it to the `addons` list is sufficient.
+
+== What it disables
+
+The addon disables the following kubelet-related monitoring:
+
+* **ServiceMonitor**: `serviceMonitorKubelet` - Prevents attempts to scrape kubelet metrics
+* **Alert Groups**:
+  ** `kubernetes-system-kubelet` - System-level kubelet and node alerts (KubeletDown, KubeletTooManyPods, KubeNodeNotReady, etc.)
+  ** `kubelet.rules` - Kubelet recording rules (metric aggregations that depend on kubelet metrics)
+* **All rules using kubelet metrics**: Any recording rule or alert that queries `job="kubelet"` is automatically filtered out, including:
+  ** Recording rules for container CPU and memory metrics from the kubelet's cadvisor endpoint
+  ** Alerts that depend on kubelet-specific metrics (e.g., `KubePersistentVolumeFillingUp`, `KubePersistentVolumeInodesFillingUp`)
+
+== See also
+
+* xref:references/addon-disable-alerts.adoc[Disable Alerts] - For disabling individual alert rules
+* https://www.vcluster.com/[vcluster documentation]
