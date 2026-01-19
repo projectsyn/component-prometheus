@@ -1,0 +1,123 @@
+apiVersion: rbac.authorization.k8s.io/v1
+items:
+  - apiVersion: rbac.authorization.k8s.io/v1
+    kind: Role
+    metadata:
+      labels:
+        app.kubernetes.io/component: prometheus
+        app.kubernetes.io/instance: default-instance
+        app.kubernetes.io/name: prometheus
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 3.5.0
+      name: prometheus-default-instance
+      namespace: default
+    rules:
+      - apiGroups:
+          - ''
+        resources:
+          - services
+          - endpoints
+          - pods
+        verbs:
+          - get
+          - list
+          - watch
+      - apiGroups:
+          - extensions
+        resources:
+          - ingresses
+        verbs:
+          - get
+          - list
+          - watch
+      - apiGroups:
+          - networking.k8s.io
+        resources:
+          - ingresses
+        verbs:
+          - get
+          - list
+          - watch
+  - apiVersion: rbac.authorization.k8s.io/v1
+    kind: Role
+    metadata:
+      labels:
+        app.kubernetes.io/component: prometheus
+        app.kubernetes.io/instance: default-instance
+        app.kubernetes.io/name: prometheus
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 3.5.0
+      name: prometheus-default-instance
+      namespace: kube-system
+    rules:
+      - apiGroups:
+          - ''
+        resources:
+          - services
+          - endpoints
+          - pods
+        verbs:
+          - get
+          - list
+          - watch
+      - apiGroups:
+          - extensions
+        resources:
+          - ingresses
+        verbs:
+          - get
+          - list
+          - watch
+      - apiGroups:
+          - networking.k8s.io
+        resources:
+          - ingresses
+        verbs:
+          - get
+          - list
+          - watch
+  - apiVersion: rbac.authorization.k8s.io/v1
+    kind: Role
+    metadata:
+      labels:
+        app.kubernetes.io/component: prometheus
+        app.kubernetes.io/instance: default-instance
+        app.kubernetes.io/name: prometheus
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 3.5.0
+      name: prometheus-default-instance
+      namespace: syn-prometheus
+    rules:
+      - apiGroups:
+          - ''
+        resources:
+          - services
+          - endpoints
+          - pods
+        verbs:
+          - get
+          - list
+          - watch
+      - apiGroups:
+          - extensions
+        resources:
+          - ingresses
+        verbs:
+          - get
+          - list
+          - watch
+      - apiGroups:
+          - networking.k8s.io
+        resources:
+          - ingresses
+        verbs:
+          - get
+          - list
+          - watch
+kind: RoleList
+metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-prometheus
+  labels:
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/part-of: syn
