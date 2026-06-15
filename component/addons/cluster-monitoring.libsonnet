@@ -25,6 +25,11 @@ local params = inv.parameters.prometheus;
           verbs: [ 'get', 'list', 'watch' ],
         },
         {
+          apiGroups: [ 'discovery.k8s.io' ],
+          resources: [ 'endpointslices' ],
+          verbs: [ 'get', 'list', 'watch' ],
+        },
+        {
           apiGroups: [ 'extensions' ],
           resources: [ 'ingresses' ],
           verbs: [ 'get', 'list', 'watch' ],
