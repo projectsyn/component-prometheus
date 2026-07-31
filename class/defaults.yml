@@ -2,6 +2,9 @@ parameters:
   prometheus:
     =_metadata:
       multi_tenant: true
+      library_aliases:
+        prom.libsonnet: prometheus-prom.libsonnet
+        alert-patching.libsonnet: prometheus-alert-patching.libsonnet
 
     # Dependency resolution
     jsonnetfile_parameters:
@@ -68,10 +71,7 @@ parameters:
         restrict_selectors: true
       disable_alerts:
         # List of alertnames to exclude from the final ruleset
-        ignoreNames:
-          - KubeHpaMaxedOut
-          - KubeHpaReplicasMismatch
-          - CPUThrottlingHigh
+        ignoreNames: ${prometheus:alerts:ignoreNames}
 
     ingressNetworkPolicySource:
       namespaceSelector: {}
@@ -146,6 +146,13 @@ parameters:
       config:
         name: syn-prometheus-operator
       overrides: {}
+
+    alerts:
+      ignoreNames:
+        - KubeHpaMaxedOut
+        - KubeHpaReplicasMismatch
+        - CPUThrottlingHigh
+      customAnnotations: {}
 
     defaultInstance: null
     instances: {}
