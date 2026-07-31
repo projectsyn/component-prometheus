@@ -313,7 +313,10 @@ local stackForInstance = function(instanceName)
     [k]: confWithBase[k].overrides,
   }, instanceComponents, {});
 
-  withAddons(import 'kube-prometheus/main.libsonnet', params.addons) {
+  withAddons(
+    (import 'kube-prometheus/main.libsonnet') + { values+:: resetAlertManagerConfig },
+    params.addons
+  ) {
     values+:: {
       common+: {
         images: std.mapWithKey(patch_image, super.images),
@@ -322,7 +325,7 @@ local stackForInstance = function(instanceName)
         // We need to explicitly handle enabling thanos, as upstream has a "null" in the field, making standard merge impossible
         [if std.objectHas(confWithBase.prometheus.config, 'thanos') then 'thanos']: confWithBase.prometheus.config.thanos,
       },
-    } + resetAlertManagerConfig + patchGrafanaDataSource(instanceName) + patchKubeControlPlaneSelectors(instanceName) + com.makeMergeable(cm),
+    } + patchGrafanaDataSource(instanceName) + patchKubeControlPlaneSelectors(instanceName) + com.makeMergeable(cm),
   } + grafanaStorage(instanceName, confWithBase) + grafanaIngress(instanceName, confWithBase) + addNodeExporterContainerArgs(instanceName, confWithBase) + addKubeStateMetricsContainerArgs(instanceName, confWithBase) + patchPrometheusNetworkPolicy(instanceName) + patchNetworkPolicy('prometheus', confWithBase) + patchNetworkPolicy('grafana', confWithBase) + patchNetworkPolicy('alertmanager', confWithBase) + com.makeMergeable(overrides) + removeNamespace;
 
 local render_component(configuredStack, component, prefix, instance) =

@@ -1,0 +1,118 @@
+applications:
+  - non-existing
+  - no-ns
+  - ns-string
+  - ns-object
+  - base as ns-in-base
+  - base as ns-overridden
+  - non-existing as still-non-existing
+  - same-ns-1
+  - same-ns-2
+  - prometheus
+  - no-ns as no-ns-team
+  - no-ns as no-ns-team2
+  - instance-ns
+
+parameters:
+  syn:
+    owner: clumsy-donkeys
+    teams:
+      chubby-cockroaches:
+        instances:
+          - ns-in-base
+          - ns-overridden
+      lovable-lizards:
+        instances:
+          - ns-object
+          - same-ns-1
+          - same-ns-2
+          - ns-in-base
+          - ~ns-in-base
+          - no-ns-team2
+      sleepy-badgers:
+        instances:
+          - no-ns-team
+
+  prometheus:
+    addons:
+      - alert-routing-discovery
+      - additional-rules
+    addon_configs:
+      alert_routing_discovery:
+        debug_config_map: true
+        team_receiver_format: team_default_%s
+        additional_alert_matchers:
+          - 'syn_team = ""'
+        prepend_routes:
+          - matchers:
+              - alertname = Watchdog
+            repeat_interval: 60s
+            receiver: heartbeat
+      additional_rules:
+        my-rules:
+          "alert:MyAlert":
+            expr: 'vector(1)'
+            labels:
+              syn_team: yet_another_team
+          "alert:NoLabels":
+            expr: 'vector(1)'
+
+    instances:
+      default-instance:
+        prometheus:
+          enabled: true
+        alertmanager:
+          enabled: true
+          config:
+            config:
+              receivers:
+                - name: foo
+                  opsgenie_configs:
+                    - source: null
+              route:
+                routes:
+                  - receiver: other
+                    matchers:
+                      - other = "true"
+        # Disabled for some speedup since it's irrelevant for this test
+        grafana:
+          enabled: false
+        nodeExporter:
+          enabled: true
+        blackboxExporter:
+          enabled: false
+        kubernetesControlPlane:
+          enabled: false
+        prometheusAdapter:
+          enabled: false
+        kubeStateMetrics:
+          enabled: false
+        kubePrometheus:
+          enabled: true
+
+  no_ns: {}
+
+  ns_string:
+    namespace: "ns-string"
+
+  ns_object:
+    namespace:
+      name: "ns-object"
+
+  base:
+    namespace: base
+
+  ns_in_base: {}
+
+  ns_overridden:
+    namespace: overridden
+
+  same_ns_1:
+    namespace: same-ns
+
+  same_ns_2:
+    namespace: same-ns
+
+  instance_ns:
+    # This will resolve to `instance-ns` or an instance when rendering the actual namespace
+    namespace: ${_instance}
