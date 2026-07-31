@@ -32,6 +32,8 @@ spec:
           for: 10m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusSDRefreshFailure
           annotations:
             description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has failed
@@ -43,6 +45,8 @@ spec:
           for: 20m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusKubernetesListWatchFailures
           annotations:
             description: Kubernetes service discovery of Prometheus {{$labels.namespace}}/{{$labels.pod}}
@@ -55,6 +59,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusNotificationQueueRunningFull
           annotations:
             description: Alert notification queue of Prometheus {{$labels.namespace}}/{{$labels.pod}}
@@ -73,6 +79,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusErrorSendingAlertsToSomeAlertmanagers
           annotations:
             description: '{{ printf "%.1f" $value }}% of alerts sent by Prometheus
@@ -92,6 +100,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusNotConnectedToAlertmanagers
           annotations:
             description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is not connected
@@ -105,6 +115,8 @@ spec:
           for: 10m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusTSDBReloadsFailing
           annotations:
             description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has detected
@@ -116,6 +128,8 @@ spec:
           for: 4h
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusTSDBCompactionsFailing
           annotations:
             description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has detected
@@ -127,6 +141,8 @@ spec:
           for: 4h
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusNotIngestingSamples
           annotations:
             description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is not ingesting
@@ -146,6 +162,8 @@ spec:
           for: 10m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusDuplicateTimestamps
           annotations:
             description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is dropping
@@ -158,6 +176,8 @@ spec:
           for: 10m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusOutOfOrderTimestamps
           annotations:
             description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is dropping
@@ -170,6 +190,8 @@ spec:
           for: 10m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusRemoteStorageFailures
           annotations:
             description: Prometheus {{$labels.namespace}}/{{$labels.pod}} failed to
@@ -192,6 +214,8 @@ spec:
           for: 15m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusRemoteWriteBehind
           annotations:
             description: Prometheus {{$labels.namespace}}/{{$labels.pod}} remote write
@@ -211,6 +235,8 @@ spec:
           for: 15m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusRemoteWriteDesiredShards
           annotations:
             description: Prometheus {{$labels.namespace}}/{{$labels.pod}} remote write
@@ -232,6 +258,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusRuleFailures
           annotations:
             description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has failed
@@ -243,6 +271,8 @@ spec:
           for: 15m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusMissingRuleEvaluations
           annotations:
             description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has missed
@@ -255,6 +285,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusTargetLimitHit
           annotations:
             description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has dropped
@@ -268,6 +300,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusLabelLimitHit
           annotations:
             description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has dropped
@@ -281,6 +315,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusScrapeBodySizeLimitHit
           annotations:
             description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has failed
@@ -293,6 +329,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusScrapeSampleLimitHit
           annotations:
             description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has failed
@@ -306,6 +344,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusTargetSyncFailure
           annotations:
             description: '{{ printf "%.0f" $value }} targets in Prometheus {{$labels.namespace}}/{{$labels.pod}}
@@ -317,6 +357,8 @@ spec:
           for: 5m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusHighQueryLoad
           annotations:
             description: Prometheus {{$labels.namespace}}/{{$labels.pod}} query API
@@ -330,6 +372,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusErrorSendingAlertsToAnyAlertmanager
           annotations:
             description: '{{ printf "%.1f" $value }}% minimum errors while sending
@@ -349,3 +393,5 @@ spec:
           for: 15m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus

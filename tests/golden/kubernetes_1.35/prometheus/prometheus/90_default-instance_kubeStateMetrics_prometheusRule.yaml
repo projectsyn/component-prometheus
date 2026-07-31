@@ -33,6 +33,8 @@ spec:
           for: 15m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeStateMetricsWatchErrors
           annotations:
             description: kube-state-metrics is experiencing errors at an elevated
@@ -48,6 +50,8 @@ spec:
           for: 15m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeStateMetricsShardingMismatch
           annotations:
             description: kube-state-metrics pods are running with different --total-shards
@@ -60,6 +64,8 @@ spec:
           for: 15m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeStateMetricsShardsMissing
           annotations:
             description: kube-state-metrics shards are missing, some Kubernetes objects
@@ -74,3 +80,5 @@ spec:
           for: 15m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus

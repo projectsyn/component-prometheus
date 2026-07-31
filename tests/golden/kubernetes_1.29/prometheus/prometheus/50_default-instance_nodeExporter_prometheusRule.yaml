@@ -37,6 +37,8 @@ spec:
           for: 1h
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeFilesystemSpaceFillingUp
           annotations:
             description: Filesystem on {{ $labels.device }}, mounted on {{ $labels.mountpoint
@@ -56,6 +58,8 @@ spec:
           for: 1h
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeFilesystemAlmostOutOfSpace
           annotations:
             description: Filesystem on {{ $labels.device }}, mounted on {{ $labels.mountpoint
@@ -72,6 +76,8 @@ spec:
           for: 30m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeFilesystemAlmostOutOfSpace
           annotations:
             description: Filesystem on {{ $labels.device }}, mounted on {{ $labels.mountpoint
@@ -88,6 +94,8 @@ spec:
           for: 30m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeFilesystemFilesFillingUp
           annotations:
             description: Filesystem on {{ $labels.device }}, mounted on {{ $labels.mountpoint
@@ -107,6 +115,8 @@ spec:
           for: 1h
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeFilesystemFilesFillingUp
           annotations:
             description: Filesystem on {{ $labels.device }}, mounted on {{ $labels.mountpoint
@@ -126,6 +136,8 @@ spec:
           for: 1h
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeFilesystemAlmostOutOfFiles
           annotations:
             description: Filesystem on {{ $labels.device }}, mounted on {{ $labels.mountpoint
@@ -142,6 +154,8 @@ spec:
           for: 1h
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeFilesystemAlmostOutOfFiles
           annotations:
             description: Filesystem on {{ $labels.device }}, mounted on {{ $labels.mountpoint
@@ -158,6 +172,8 @@ spec:
           for: 1h
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeNetworkReceiveErrs
           annotations:
             description: '{{ $labels.instance }} interface {{ $labels.device }} has
@@ -170,6 +186,8 @@ spec:
           for: 1h
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeNetworkTransmitErrs
           annotations:
             description: '{{ $labels.instance }} interface {{ $labels.device }} has
@@ -182,6 +200,8 @@ spec:
           for: 1h
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeHighNumberConntrackEntriesUsed
           annotations:
             description: '{{ $value | humanizePercentage }} of conntrack entries are
@@ -192,6 +212,8 @@ spec:
             (node_nf_conntrack_entries{job="nodeexporter-default-instance"} / node_nf_conntrack_entries_limit) > 0.75
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeTextFileCollectorScrapeError
           annotations:
             description: Node Exporter text file collector on {{ $labels.instance
@@ -202,6 +224,8 @@ spec:
             node_textfile_scrape_error{job="nodeexporter-default-instance"} == 1
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeClockSkewDetected
           annotations:
             description: Clock at {{ $labels.instance }} is out of sync by more than
@@ -223,6 +247,8 @@ spec:
           for: 10m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeClockNotSynchronising
           annotations:
             description: Clock at {{ $labels.instance }} is not synchronising. Ensure
@@ -236,6 +262,8 @@ spec:
           for: 10m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeRAIDDegraded
           annotations:
             description: RAID array '{{ $labels.device }}' at {{ $labels.instance
@@ -248,6 +276,8 @@ spec:
           for: 15m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeRAIDDiskFailure
           annotations:
             description: At least one device in RAID array at {{ $labels.instance
@@ -259,6 +289,8 @@ spec:
             node_md_disks{state="failed",job="nodeexporter-default-instance",device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)"} > 0
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeFileDescriptorLimit
           annotations:
             description: File descriptors limit at {{ $labels.instance }} is currently
@@ -272,6 +304,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeFileDescriptorLimit
           annotations:
             description: File descriptors limit at {{ $labels.instance }} is currently
@@ -285,6 +319,8 @@ spec:
           for: 15m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeCPUHighUsage
           annotations:
             description: |
@@ -296,6 +332,8 @@ spec:
           for: 15m
           labels:
             severity: info
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeSystemSaturation
           annotations:
             description: |
@@ -309,6 +347,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeMemoryMajorPagesFaults
           annotations:
             description: |
@@ -321,6 +361,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeMemoryHighUtilization
           annotations:
             description: |
@@ -332,6 +374,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeDiskIOSaturation
           annotations:
             description: |
@@ -344,6 +388,8 @@ spec:
           for: 30m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeSystemdServiceFailed
           annotations:
             description: Systemd service {{ $labels.name }} has entered failed state
@@ -355,6 +401,8 @@ spec:
           for: 5m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: NodeBondingDegraded
           annotations:
             description: Bonding interface {{ $labels.master }} on {{ $labels.instance
@@ -366,6 +414,8 @@ spec:
           for: 5m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
     - name: node-exporter.rules
       rules:
         - expr: |

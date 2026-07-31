@@ -31,6 +31,8 @@ spec:
           for: 10m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: AlertmanagerMembersInconsistent
           annotations:
             description: Alertmanager {{ $labels.namespace }}/{{ $labels.pod}} has
@@ -47,6 +49,8 @@ spec:
           for: 15m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: AlertmanagerFailedToSendAlerts
           annotations:
             description: Alertmanager {{ $labels.namespace }}/{{ $labels.pod}} failed
@@ -64,6 +68,8 @@ spec:
           for: 5m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: AlertmanagerClusterFailedToSendAlerts
           annotations:
             description: The minimum notification failure rate to {{ $labels.integration
@@ -82,6 +88,8 @@ spec:
           for: 5m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: AlertmanagerClusterFailedToSendAlerts
           annotations:
             description: The minimum notification failure rate to {{ $labels.integration
@@ -100,6 +108,8 @@ spec:
           for: 5m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: AlertmanagerConfigInconsistent
           annotations:
             description: Alertmanager instances within the {{$labels.job}} cluster
@@ -115,6 +125,8 @@ spec:
           for: 20m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: AlertmanagerClusterDown
           annotations:
             description: '{{ $value | humanizePercentage }} of Alertmanager instances
@@ -137,6 +149,8 @@ spec:
           for: 5m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: AlertmanagerClusterCrashlooping
           annotations:
             description: '{{ $value | humanizePercentage }} of Alertmanager instances
@@ -159,3 +173,5 @@ spec:
           for: 5m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus

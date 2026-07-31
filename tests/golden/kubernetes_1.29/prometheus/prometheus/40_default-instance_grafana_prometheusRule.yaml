@@ -31,6 +31,8 @@ spec:
           for: 5m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
     - name: grafana_rules
       rules:
         - expr: |

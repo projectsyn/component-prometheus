@@ -29,6 +29,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubePodNotReady
           annotations:
             description: Pod {{ $labels.namespace }}/{{ $labels.pod }} has been in
@@ -47,6 +49,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeDeploymentGenerationMismatch
           annotations:
             description: Deployment generation for {{ $labels.namespace }}/{{ $labels.deployment
@@ -61,6 +65,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeDeploymentReplicasMismatch
           annotations:
             description: Deployment {{ $labels.namespace }}/{{ $labels.deployment
@@ -81,6 +87,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeDeploymentRolloutStuck
           annotations:
             description: Rollout of deployment {{ $labels.namespace }}/{{ $labels.deployment
@@ -94,6 +102,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeStatefulSetReplicasMismatch
           annotations:
             description: StatefulSet {{ $labels.namespace }}/{{ $labels.statefulset
@@ -114,6 +124,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeStatefulSetGenerationMismatch
           annotations:
             description: StatefulSet generation for {{ $labels.namespace }}/{{ $labels.statefulset
@@ -128,6 +140,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeStatefulSetUpdateNotRolledOut
           annotations:
             description: StatefulSet {{ $labels.namespace }}/{{ $labels.statefulset
@@ -155,6 +169,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeDaemonSetRolloutStuck
           annotations:
             description: DaemonSet {{ $labels.namespace }}/{{ $labels.daemonset }}
@@ -189,6 +205,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeContainerWaiting
           annotations:
             description: 'pod/{{ $labels.pod }} in namespace {{ $labels.namespace
@@ -202,6 +220,8 @@ spec:
           for: 1h
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeDaemonSetNotScheduled
           annotations:
             description: '{{ $value }} Pods of DaemonSet {{ $labels.namespace }}/{{
@@ -216,6 +236,8 @@ spec:
           for: 10m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeDaemonSetMisScheduled
           annotations:
             description: '{{ $value }} Pods of DaemonSet {{ $labels.namespace }}/{{
@@ -228,6 +250,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeJobNotCompleted
           annotations:
             description: Job {{ $labels.namespace }}/{{ $labels.job_name }} is taking
@@ -241,6 +265,8 @@ spec:
             kube_job_status_active{job="kubestatemetrics-default-instance"} > 0) > 43200
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeJobFailed
           annotations:
             description: Job {{ $labels.namespace }}/{{ $labels.job_name }} failed
@@ -253,6 +279,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubePdbNotEnoughHealthyPods
           annotations:
             description: PDB {{ $labels.cluster }}/{{ $labels.namespace }}/{{ $labels.poddisruptionbudget
@@ -270,6 +298,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
     - name: kubernetes-resources
       rules:
         - alert: KubeCPUOvercommit
@@ -307,6 +337,8 @@ spec:
           for: 10m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeMemoryOvercommit
           annotations:
             description: Cluster {{ $labels.cluster }} has overcommitted memory resource
@@ -342,6 +374,8 @@ spec:
           for: 10m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeCPUQuotaOvercommit
           annotations:
             description: Cluster {{ $labels.cluster }} has overcommitted CPU resource
@@ -359,6 +393,8 @@ spec:
           for: 5m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeMemoryQuotaOvercommit
           annotations:
             description: Cluster {{ $labels.cluster }} has overcommitted memory resource
@@ -376,6 +412,8 @@ spec:
           for: 5m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeQuotaAlmostFull
           annotations:
             description: Namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage
@@ -391,6 +429,8 @@ spec:
           for: 15m
           labels:
             severity: info
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeQuotaFullyUsed
           annotations:
             description: Namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage
@@ -406,6 +446,8 @@ spec:
           for: 15m
           labels:
             severity: info
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeQuotaExceeded
           annotations:
             description: Namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage
@@ -421,6 +463,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
     - name: kubernetes-storage
       rules:
         - alert: KubePersistentVolumeFillingUp
@@ -446,6 +490,8 @@ spec:
           for: 1m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubePersistentVolumeFillingUp
           annotations:
             description: Based on recent sampling, the PersistentVolume claimed by
@@ -472,6 +518,8 @@ spec:
           for: 1h
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubePersistentVolumeInodesFillingUp
           annotations:
             description: The PersistentVolume claimed by {{ $labels.persistentvolumeclaim
@@ -495,6 +543,8 @@ spec:
           for: 1m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubePersistentVolumeInodesFillingUp
           annotations:
             description: Based on recent sampling, the PersistentVolume claimed by
@@ -521,6 +571,8 @@ spec:
           for: 1h
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubePersistentVolumeErrors
           annotations:
             description: The persistent volume {{ $labels.persistentvolume }} {{ with
@@ -533,6 +585,8 @@ spec:
           for: 5m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
     - name: kubernetes-system
       rules:
         - alert: KubeVersionMismatch
@@ -546,6 +600,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeClientErrors
           annotations:
             description: Kubernetes API server client '{{ $labels.job }}/{{ $labels.instance
@@ -561,6 +617,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
     - name: kube-apiserver-slos
       rules:
         - alert: KubeAPIErrorBudgetBurn
@@ -578,6 +636,8 @@ spec:
             long: 1h
             severity: critical
             short: 5m
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeAPIErrorBudgetBurn
           annotations:
             description: The API server is burning too much error budget on cluster
@@ -593,6 +653,8 @@ spec:
             long: 6h
             severity: critical
             short: 30m
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeAPIErrorBudgetBurn
           annotations:
             description: The API server is burning too much error budget on cluster
@@ -608,6 +670,8 @@ spec:
             long: 1d
             severity: warning
             short: 2h
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeAPIErrorBudgetBurn
           annotations:
             description: The API server is burning too much error budget on cluster
@@ -623,6 +687,8 @@ spec:
             long: 3d
             severity: warning
             short: 6h
+            syn: 'true'
+            syn_component: prometheus
     - name: kubernetes-system-apiserver
       rules:
         - alert: KubeClientCertificateExpiration
@@ -638,6 +704,8 @@ spec:
           for: 5m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeClientCertificateExpiration
           annotations:
             description: A client certificate used to authenticate to kubernetes apiserver
@@ -651,6 +719,8 @@ spec:
           for: 5m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeAggregatedAPIErrors
           annotations:
             description: Kubernetes aggregated API {{ $labels.instance }}/{{ $labels.name
@@ -663,6 +733,8 @@ spec:
           for: 10m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeAggregatedAPIDown
           annotations:
             description: Kubernetes aggregated API {{ $labels.name }}/{{ $labels.namespace
@@ -675,6 +747,8 @@ spec:
           for: 5m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeAPIDown
           annotations:
             description: KubeAPI has disappeared from Prometheus target discovery.
@@ -685,6 +759,8 @@ spec:
           for: 15m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeAPITerminatedRequests
           annotations:
             description: The kubernetes apiserver has terminated {{ $value | humanizePercentage
@@ -697,6 +773,8 @@ spec:
           for: 5m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
     - name: kubernetes-system-kubelet
       rules:
         - alert: KubeNodeNotReady
@@ -712,6 +790,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeNodePressure
           annotations:
             description: '{{ $labels.node }} on cluster {{ $labels.cluster }} has
@@ -726,6 +806,8 @@ spec:
           for: 10m
           labels:
             severity: info
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeNodeUnreachable
           annotations:
             description: '{{ $labels.node }} is unreachable and some workloads may
@@ -737,6 +819,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeletTooManyPods
           annotations:
             description: Kubelet '{{ $labels.node }}' is running at {{ $value | humanizePercentage
@@ -760,6 +844,8 @@ spec:
           for: 15m
           labels:
             severity: info
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeNodeReadinessFlapping
           annotations:
             description: The readiness status of node {{ $labels.node }} has changed
@@ -774,6 +860,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeNodeEviction
           annotations:
             description: Node {{ $labels.node }} on {{ $labels.cluster }} is evicting
@@ -792,6 +880,8 @@ spec:
           for: 0s
           labels:
             severity: info
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeletPlegDurationHigh
           annotations:
             description: The Kubelet Pod Lifecycle Event Generator has a 99th percentile
@@ -804,6 +894,8 @@ spec:
           for: 5m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeletPodStartUpLatencyHigh
           annotations:
             description: Kubelet Pod startup 99th percentile latency is {{ $value
@@ -827,6 +919,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeletClientCertificateExpiration
           annotations:
             description: Client certificate for Kubelet on node {{ $labels.node }}
@@ -838,6 +932,8 @@ spec:
             kubelet_certificate_manager_client_ttl_seconds < 604800
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeletClientCertificateExpiration
           annotations:
             description: Client certificate for Kubelet on node {{ $labels.node }}
@@ -849,6 +945,8 @@ spec:
             kubelet_certificate_manager_client_ttl_seconds < 86400
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeletServerCertificateExpiration
           annotations:
             description: Server certificate for Kubelet on node {{ $labels.node }}
@@ -860,6 +958,8 @@ spec:
             kubelet_certificate_manager_server_ttl_seconds < 604800
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeletServerCertificateExpiration
           annotations:
             description: Server certificate for Kubelet on node {{ $labels.node }}
@@ -871,6 +971,8 @@ spec:
             kubelet_certificate_manager_server_ttl_seconds < 86400
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeletClientCertificateRenewalErrors
           annotations:
             description: Kubelet on node {{ $labels.node }} has failed to renew its
@@ -883,6 +985,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeletServerCertificateRenewalErrors
           annotations:
             description: Kubelet on node {{ $labels.node }} has failed to renew its
@@ -895,6 +999,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: KubeletDown
           annotations:
             description: Kubelet has disappeared from Prometheus target discovery.
@@ -905,6 +1011,8 @@ spec:
           for: 15m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
     - name: kubernetes-system-scheduler
       rules:
         - alert: KubeSchedulerDown
@@ -917,6 +1025,8 @@ spec:
           for: 15m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
     - name: kubernetes-system-controller-manager
       rules:
         - alert: KubeControllerManagerDown
@@ -930,6 +1040,8 @@ spec:
           for: 15m
           labels:
             severity: critical
+            syn: 'true'
+            syn_component: prometheus
     - interval: 3m
       name: kube-apiserver-availability.rules
       rules:

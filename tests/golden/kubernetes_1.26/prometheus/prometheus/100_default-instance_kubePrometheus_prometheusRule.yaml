@@ -29,6 +29,8 @@ spec:
           for: 10m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: Watchdog
           annotations:
             description: |
@@ -43,6 +45,8 @@ spec:
           expr: vector(1)
           labels:
             severity: none
+            syn: 'true'
+            syn_component: prometheus
         - alert: InfoInhibitor
           annotations:
             description: |
@@ -59,6 +63,8 @@ spec:
             == 1
           labels:
             severity: none
+            syn: 'true'
+            syn_component: prometheus
     - name: node-network
       rules:
         - alert: NodeNetworkInterfaceFlapping
@@ -73,6 +79,8 @@ spec:
           for: 2m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
     - name: kube-prometheus-node-recording.rules
       rules:
         - expr: sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait",mode!="steal"}[3m]))
