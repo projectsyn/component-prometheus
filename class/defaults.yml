@@ -72,6 +72,13 @@ parameters:
       disable_alerts:
         # List of alertnames to exclude from the final ruleset
         ignoreNames: ${prometheus:alerts:ignoreNames}
+      alert_routing_discovery:
+        debug_config_map: false
+        team_receiver_format: team_default_%s
+        additional_alert_matchers: []
+        prepend_routes: []
+        append_routes: []
+        fallback_team: null
 
     ingressNetworkPolicySource:
       namespaceSelector: {}
