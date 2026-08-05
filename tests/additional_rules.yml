@@ -34,3 +34,8 @@ parameters:
           enabled: true
         kubePrometheus:
           enabled: true
+
+    alerts:
+      customAnnotations:
+        PrometheusBadConfig:
+          runbook_url: https://hub.syn.tools/prometheus/runbooks/PrometheusBadConfig.html

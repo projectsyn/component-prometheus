@@ -231,6 +231,47 @@ Can be overridden by the instance-specific configuration.
 General rules and alerts are grouped in the `kubePrometheus` component.
 
 
+== `alerts`
+
+[horizontal]
+type:: object
+
+This parameter holds configurations that are used by component library `prometheus-alert-patching.libsonnet`.
+The configurations are also used by component addons `additional-rules` and `disable-alerts`.
+
+=== `ignoreNames`
+
+[horizontal]
+type:: list
+default:: https://github.com/projectsyn/component-prometheus/blob/master/class/defaults.yml[See `class/defaults.yml`]
+
+A list of alert names to remove when rendering Prometheus rule groups.
+
+=== `customAnnotations`
+
+[horizontal]
+type:: object
+default:: `{}`
+
+This parameter allows users to apply custom annotations on individual alerts.
+
+The object keys are expected to be strings and used as alert names.
+The object values are expected to be objects with string keys and values and are added to the target alert's `annotations`.
+
+==== Example
+
+The following configuration will add (or overwrite) annotation `runbook_url` for alert `PrometheusBadConfig`
+
+[source,yaml]
+----
+parameters:
+  prometheus:
+    alerts:
+      customAnnotations:
+        PrometheusBadConfig:
+          runbook_url: https://hub.syn.tools/prometheus/runbooks/PrometheusBadConfig.html
+----
+
 == `defaultInstance`
 
 [horizontal]

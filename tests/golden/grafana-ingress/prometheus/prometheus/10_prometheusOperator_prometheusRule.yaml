@@ -28,6 +28,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusOperatorWatchErrors
           annotations:
             description: Errors while performing watch operations in controller {{$labels.controller}}
@@ -39,6 +41,8 @@ spec:
           for: 15m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusOperatorSyncFailed
           annotations:
             description: Controller {{ $labels.controller }} in {{ $labels.namespace
@@ -50,6 +54,8 @@ spec:
           for: 10m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusOperatorReconcileErrors
           annotations:
             description: '{{ $value | humanizePercentage }} of reconciling operations
@@ -62,6 +68,8 @@ spec:
           for: 10m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusOperatorNodeLookupErrors
           annotations:
             description: Errors while reconciling Prometheus in {{ $labels.namespace
@@ -73,6 +81,8 @@ spec:
           for: 10m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusOperatorNotReady
           annotations:
             description: Prometheus operator in {{ $labels.namespace }} namespace
@@ -84,6 +94,8 @@ spec:
           for: 5m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
         - alert: PrometheusOperatorRejectedResources
           annotations:
             description: Prometheus operator in {{ $labels.namespace }} namespace
@@ -96,6 +108,8 @@ spec:
           for: 5m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus
     - name: config-reloaders
       rules:
         - alert: ConfigReloaderSidecarErrors
@@ -110,3 +124,5 @@ spec:
           for: 10m
           labels:
             severity: warning
+            syn: 'true'
+            syn_component: prometheus

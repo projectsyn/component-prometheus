@@ -200,6 +200,8 @@ local podMonitor(name) = kube._Object(api_version.monitoring, 'PodMonitor', name
 local probe(name) = kube._Object(api_version.monitoring, 'Probe', name);
 
 {
+  api_version: api_version,
+
   RegisterNamespace: registerNamespace,
   NetworkPolicy: networkPolicy,
 
