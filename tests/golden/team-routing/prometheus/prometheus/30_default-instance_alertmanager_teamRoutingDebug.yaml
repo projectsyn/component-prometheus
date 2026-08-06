@@ -67,3 +67,4 @@ metadata:
     app.kubernetes.io/managed-by: commodore
     app.kubernetes.io/part-of: syn
   name: alert-routing-discovery-debug
+  namespace: syn-prometheus
