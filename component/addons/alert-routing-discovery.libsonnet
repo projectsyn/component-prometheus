@@ -27,6 +27,7 @@ local params = inv.parameters.prometheus;
       kind: 'ConfigMap',
       metadata: {
         name: 'alert-routing-discovery-debug',
+        namespace: $.values.alertmanager.namespace,
       },
       data: ard.debugConfigMapData(
         params.addon_configs.alert_routing_discovery,
