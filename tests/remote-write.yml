@@ -1,3 +1,28 @@
-# Overwrite parameters here
-
-# parameters: {...}
+parameters:
+  prometheus:
+    instances:
+      default-instance:
+        prometheus:
+          enabled: true
+          overrides:
+            prometheus:
+              spec:
+                remoteWrite:
+                  - url: http://mymetrics.com/api/v1/push
+                    headers:
+                      X-Scope-OrgID: wurscht
+                    writeRelabelConfigs:
+                      - sourceLabels: ['__name__']
+                        regex: 'apiserver_.*_bucket|etcd_request_duration_seconds_bucket'
+                        action: drop
+          remoteWrite:
+            foo:
+              url: http://mymetrics.com/api/v1/push
+              headers:
+                "X-Scope-OrgID": best-org-ever
+              writeRelabelConfigs:
+                - action: keep
+                  sourceLabels: ['__name__']
+                  timeseries:
+                    - metric_number_one
+                    - metric_number_two
