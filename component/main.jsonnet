@@ -12,25 +12,30 @@ local instance = inv.parameters._instance;
 
 local common = import 'common.libsonnet';
 
-local instanceStacks = std.mapWithKey(
-  function(name, param) common.stackForInstance(name),
-  params.instances
-);
-local mergedParams = std.mapWithKey(
-  function(name, param) params.base + com.makeMergeable(param),
-  params.instances
-);
+local instanceStacks = {
+  [name]: common.stackForInstance(name)
+  for name in std.objectFields(params.instances)
+  if params.instances[name] != null
+};
+local mergedParams = {
+  [name]: params.base + com.makeMergeable(params.instances[name])
+  for name in std.objectFields(params.instances)
+  if params.instances[name] != null
+};
 
 
 local namespacesPromLabels =
   local f(prev, i) =
-    local p = mergedParams[i];
-    local stack = instanceStacks[i];
-    prev {
-      [if p.prometheus.enabled then stack.values.prometheus.namespace]+: {
-        ['monitoring.syn.tools/%s' % i]: 'true',
-      },
-    };
+    if params.instances[i] != null then
+      local p = mergedParams[i];
+      local stack = instanceStacks[i];
+      prev {
+        [if p.prometheus.enabled then stack.values.prometheus.namespace]+: {
+          ['monitoring.syn.tools/%s' % i]: 'true',
+        },
+      }
+    else
+      prev;
   std.foldl(f, std.objectFields(params.instances), {});
 
 local namespaces = std.foldl(

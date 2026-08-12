@@ -342,6 +342,8 @@ Instances contains the configuration for each instance of the stack that should 
 
 Every deployable component can be configured in its corresponding key.
 
+Users can set fields in `instances` to `null` to disable stacks defined higher up in the hierarchy.
+
 == `base.COMPONENT`, `instances.*.COMPONENT`
 
 [horizontal]
