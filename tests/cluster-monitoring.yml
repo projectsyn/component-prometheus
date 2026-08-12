@@ -12,5 +12,6 @@ parameters:
       other_instance:
         prometheus:
           enabled: true
+      another_instance: null
     addons:
       - cluster-monitoring
