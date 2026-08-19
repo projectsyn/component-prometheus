@@ -11,7 +11,7 @@ local alertpatching = import 'lib/prometheus-alert-patching.libsonnet';
   * \arg The name of the PrometheusRule.
   * \return A PrometheusRule object.
   */
-  PrometheusRule(name): prom.PrometheusRule,
+  PrometheusRule(name): prom.PrometheusRule(name),
 
   /**
   * \brief Helper to create ServiceMonitor objects.
@@ -19,7 +19,7 @@ local alertpatching = import 'lib/prometheus-alert-patching.libsonnet';
   * \arg The name of the ServiceMonitor
   * \return An empty ServiceMonitor object.
   */
-  ServiceMonitor(name): prom.ServiceMonitor,
+  ServiceMonitor(name): prom.ServiceMonitor(name),
 
   /**
   * \brief Function to render rules defined in the hierarchy
