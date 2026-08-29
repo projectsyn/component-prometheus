@@ -304,6 +304,33 @@ local patchKubeControlPlaneSelectors(instanceName) = {
   },
 };
 
+local transformRelabelConfigs(remoteWriteConfig) = if std.objectHas(remoteWriteConfig, 'writeRelabelConfigs')
+then remoteWriteConfig {
+  writeRelabelConfigs: std.map(
+    function(wrlc) wrlc {
+      timeseries:: [],
+      [if std.objectHas(wrlc, 'timeseries') && std.length(com.renderArray(wrlc.timeseries)) > 0
+      then 'regex']: std.format('(%s)', std.join('|', com.renderArray(wrlc.timeseries))),
+    },
+    remoteWriteConfig.writeRelabelConfigs,
+  ),
+
+}
+else remoteWriteConfig;
+
+local remoteWriteConfig(instanceName, confWithBase) = if std.objectHas(confWithBase, 'prometheus') && std.objectHas(confWithBase.prometheus, 'remoteWrite') then {
+  local rwd = confWithBase.prometheus.remoteWrite,
+  prometheus+: {
+    spec+: {
+      remoteWrite+: std.filterMap(
+        function(name) rwd[name] != null,
+        function(name) transformRelabelConfigs(rwd[name] { name: name }),
+        std.objectFields(rwd)
+      ),
+    },
+  },
+};
+
 local stackForInstance = function(instanceName)
   local confWithBase = com.makeMergeable(params.base) + com.makeMergeable(params.instances[instanceName]);
   local cm = std.foldl(function(prev, k) prev {
@@ -326,7 +353,7 @@ local stackForInstance = function(instanceName)
         [if std.objectHas(confWithBase.prometheus.config, 'thanos') then 'thanos']: confWithBase.prometheus.config.thanos,
       },
     } + patchGrafanaDataSource(instanceName) + patchKubeControlPlaneSelectors(instanceName) + com.makeMergeable(cm),
-  } + grafanaStorage(instanceName, confWithBase) + grafanaIngress(instanceName, confWithBase) + addNodeExporterContainerArgs(instanceName, confWithBase) + addKubeStateMetricsContainerArgs(instanceName, confWithBase) + patchPrometheusNetworkPolicy(instanceName) + patchNetworkPolicy('prometheus', confWithBase) + patchNetworkPolicy('grafana', confWithBase) + patchNetworkPolicy('alertmanager', confWithBase) + com.makeMergeable(overrides) + removeNamespace;
+  } + grafanaStorage(instanceName, confWithBase) + grafanaIngress(instanceName, confWithBase) + remoteWriteConfig(instanceName, confWithBase) + addNodeExporterContainerArgs(instanceName, confWithBase) + addKubeStateMetricsContainerArgs(instanceName, confWithBase) + patchPrometheusNetworkPolicy(instanceName) + patchNetworkPolicy('prometheus', confWithBase) + patchNetworkPolicy('grafana', confWithBase) + patchNetworkPolicy('alertmanager', confWithBase) + com.makeMergeable(overrides) + removeNamespace;
 
 local render_component(configuredStack, component, prefix, instance) =
   local kp = configuredStack[component];
