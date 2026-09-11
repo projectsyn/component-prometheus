@@ -1,6 +1,9 @@
 local prom = import 'lib/prometheus.libsonnet';
 
-local alertpatching = import 'lib/prometheus-alert-patching.libsonnet';
+// NOTE(sg): We import the component's alert-patching library through the
+// library alias here. This makes using the library in other components' tests
+// easier.
+local alertpatching = import 'lib/alert-patching.libsonnet';
 
 {
   api_version: prom.api_version,
