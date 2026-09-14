@@ -132,7 +132,16 @@ local serviceAccountRef(instance=params.defaultInstance) = {
   * \arg The name of the PrometheusRule.
   * \return A PrometheusRule object.
   */
-local prometheusRule(name) = enable(kube._Object(api_version.monitoring, 'PrometheusRule', name));
+local prometheusRule(name) = enable({
+  apiVersion: api_version.monitoring,
+  kind: 'PrometheusRule',
+  metadata: {
+    labels: {
+      name: std.join('-', std.split(name, ':')),
+    },
+    name: name,
+  },
+});
 
 /**
  * \brief Helper to create ServiceMonitor objects.
@@ -140,13 +149,21 @@ local prometheusRule(name) = enable(kube._Object(api_version.monitoring, 'Promet
  * \arg The name of the ServiceMonitor.
  * \return A ServiceMonitor object.
  */
-local serviceMonitor(name) = kube._Object(api_version.monitoring, 'ServiceMonitor', name) {
+local serviceMonitor(name) = {
   local sm = self,
 
   targetNamespace:: '',
   selector:: {},
   endpoints:: {},
 
+  apiVersion: api_version.monitoring,
+  kind: 'ServiceMonitor',
+  metadata: {
+    labels: {
+      name: std.join('-', std.split(name, ':')),
+    },
+    name: name,
+  },
   spec: {
     namespaceSelector: {
       matchNames: [ sm.targetNamespace ],
@@ -189,7 +206,16 @@ local dropRuntimeMetrics = {
  * \arg The name of the PodMonitor.
  * \return A PodMonitor object.
  */
-local podMonitor(name) = kube._Object(api_version.monitoring, 'PodMonitor', name);
+local podMonitor(name) = {
+  apiVersion: api_version.monitoring,
+  kind: 'PodMonitor',
+  metadata: {
+    labels: {
+      name: std.join('-', std.split(name, ':')),
+    },
+    name: name,
+  },
+};
 
 /**
  * \brief Helper to create Probe objects.
@@ -197,7 +223,16 @@ local podMonitor(name) = kube._Object(api_version.monitoring, 'PodMonitor', name
  * \arg The name of the Probe.
  * \return A Probe object.
  */
-local probe(name) = kube._Object(api_version.monitoring, 'Probe', name);
+local probe(name) = {
+  apiVersion: api_version.monitoring,
+  kind: 'Probe',
+  metadata: {
+    labels: {
+      name: std.join('-', std.split(name, ':')),
+    },
+    name: name,
+  },
+};
 
 {
   api_version: api_version,
