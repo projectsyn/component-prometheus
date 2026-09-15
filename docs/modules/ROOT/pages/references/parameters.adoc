@@ -404,6 +404,33 @@ prometheus:
 Can be used to supply additional ingress rules to the NetworkPolicies for Prometheus, Grafana or Alertmanager.
 Configured rules will be appended to the existing NetworkPolicy and must adhere to the https://kubernetes.io/docs/reference/kubernetes-api/policy-resources/network-policy-v1/#NetworkPolicySpec[Kubernetes NetworkPolicy spec].
 
+== `instances.*.prometheus.remoteWrite`
+
+[horizontal]
+type:: dict
+default:: {}
+example::
+[source,yaml]
+----
+prometheus:
+  remoteWrite:
+    myRemoteWriteTarget:
+      url: http://mymetrics.com/api/v1/push
+      headers:
+        "X-Scope-OrgID": best-org-ever
+      writeRelabelConfigs:
+        - action: keep
+          sourceLabels: ['__name__']
+          timeseries:
+            - metric_number_one
+            - metric_number_two
+            - metric_number_three
+----
+
+Can be used to supply additional remoteWrite targets to Prometheus.
+All timeseries listed under `writeRelabelConfigs.timeseries` are automatically joined into a regular expression that will match either of the provided timeseries.
+The resulting expression is used as the `regex` parameter in the final remote write configuration.
+
 [[common]]
 == `base.common`, `instances.common`
 
