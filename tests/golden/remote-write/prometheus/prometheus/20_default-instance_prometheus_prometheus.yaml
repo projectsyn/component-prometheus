@@ -45,6 +45,15 @@ spec:
             - __name__
     - headers:
         X-Scope-OrgID: best-org-ever
+      name: bar
+      url: http://mymetrics.com/api/v1/push
+      writeRelabelConfigs:
+        - action: keep
+          regex: ()
+          sourceLabels:
+            - __name__
+    - headers:
+        X-Scope-OrgID: best-org-ever
       name: foo
       url: http://mymetrics.com/api/v1/push
       writeRelabelConfigs:

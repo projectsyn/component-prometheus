@@ -309,8 +309,7 @@ then remoteWriteConfig {
   writeRelabelConfigs: std.map(
     function(wrlc) wrlc {
       timeseries:: [],
-      [if std.objectHas(wrlc, 'timeseries') && std.length(com.renderArray(wrlc.timeseries)) > 0
-      then 'regex']: std.format('(%s)', std.join('|', com.renderArray(wrlc.timeseries))),
+      [if std.objectHas(wrlc, 'timeseries') then 'regex']: std.format('(%s)', std.join('|', com.renderArray(wrlc.timeseries))),
     },
     remoteWriteConfig.writeRelabelConfigs,
   ),

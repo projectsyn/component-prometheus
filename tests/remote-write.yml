@@ -26,3 +26,11 @@ parameters:
                   timeseries:
                     - metric_number_one
                     - metric_number_two
+            bar:
+              url: http://mymetrics.com/api/v1/push
+              headers:
+                "X-Scope-OrgID": best-org-ever
+              writeRelabelConfigs:
+                - action: keep
+                  sourceLabels: ['__name__']
+                  timeseries: []
