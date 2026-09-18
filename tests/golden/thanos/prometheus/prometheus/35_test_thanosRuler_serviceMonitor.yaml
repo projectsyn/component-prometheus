@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-prometheus
+  labels:
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/part-of: syn
+  name: thanosruler-test
+  namespace: syn-prometheus
+spec:
+  endpoints:
+    - port: web
+  namespaceSelector:
+    matchNames:
+      - syn-prometheus
+  selector:
+    matchLabels:
+      operated-thanos-ruler: 'true'

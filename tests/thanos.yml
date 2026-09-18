@@ -38,3 +38,19 @@ parameters:
               objectStorageConfig:
                 key: thanos
                 name: thanos-objstore-config
+        thanosRuler:
+          enabled: true
+          config:
+            replicas: 1
+            queryEndpoints:
+              - http://prometheus-test.syn-prometheus:9090
+            alertmanagersUrl:
+              - http://alertmanager-test.syn-prometheus:9093
+            ruleNamespaceSelector:
+              matchExpressions:
+                - key: monitoring.example.com/user
+                  operator: Exists
+          overrides:
+            thanosRuler:
+              spec:
+                evaluationInterval: 1m

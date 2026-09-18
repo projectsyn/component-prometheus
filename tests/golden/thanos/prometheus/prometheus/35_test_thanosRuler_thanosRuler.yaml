@@ -1,0 +1,22 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ThanosRuler
+metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-prometheus
+  labels:
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/part-of: syn
+  name: thanosruler-test
+  namespace: syn-prometheus
+spec:
+  alertmanagersUrl:
+    - http://alertmanager-test.syn-prometheus:9093
+  evaluationInterval: 1m
+  queryEndpoints:
+    - http://prometheus-test.syn-prometheus:9090
+  replicas: 1
+  ruleNamespaceSelector:
+    matchExpressions:
+      - key: monitoring.example.com/user
+        operator: Exists
+  serviceAccountName: thanosruler-test
