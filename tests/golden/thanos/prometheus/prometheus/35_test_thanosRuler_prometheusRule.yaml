@@ -1,0 +1,52 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  annotations:
+    source: https://github.com/projectsyn/component-prometheus
+  labels:
+    app.kubernetes.io/managed-by: commodore
+    app.kubernetes.io/part-of: syn
+    monitoring.syn.tools/enabled: 'true'
+  name: thanosruler-test
+  namespace: syn-prometheus
+spec:
+  groups:
+    - name: thanosruler-test
+      rules:
+        - alert: ThanosRulerDown
+          annotations:
+            summary: Thanos Ruler thanosruler-test is down, its alert rules are not
+              being evaluated.
+          expr: up{namespace="syn-prometheus",service="thanos-ruler-operated"} ==
+            0 or absent(up{namespace="syn-prometheus",service="thanos-ruler-operated"})
+          for: 15m
+          labels:
+            severity: critical
+        - alert: ThanosRulerRuleEvaluationFailing
+          annotations:
+            summary: Thanos Ruler thanosruler-test is failing rule evaluations, alerts
+              may be missed.
+          expr: increase(prometheus_rule_evaluation_failures_total{namespace="syn-prometheus"}[10m])
+            > 0
+          for: 15m
+          labels:
+            severity: warning
+        - alert: ThanosRulerIsDroppingAlerts
+          annotations:
+            summary: Thanos Ruler thanosruler-test is dropping alerts instead of delivering
+              them to Alertmanager.
+          expr: sum(rate(thanos_alert_sender_alerts_dropped_total{namespace="syn-prometheus"}[5m]))
+            > 0 or sum(rate(thanos_alert_queue_alerts_dropped_total{namespace="syn-prometheus"}[5m]))
+            > 0
+          for: 5m
+          labels:
+            severity: critical
+        - alert: ThanosRulerNoEvaluation
+          annotations:
+            summary: Thanos Ruler thanosruler-test has not evaluated a rule group
+              for 10 intervals.
+          expr: time() - max by (rule_group) (prometheus_rule_group_last_evaluation_timestamp_seconds{namespace="syn-prometheus"})
+            > 10 * max by (rule_group) (prometheus_rule_group_interval_seconds{namespace="syn-prometheus"})
+          for: 5m
+          labels:
+            severity: critical

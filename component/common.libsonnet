@@ -41,6 +41,7 @@ local instanceComponents = [
   'prometheus',
   'prometheusAdapter',
   'kubePrometheus',
+  'thanosRuler',
 ];
 
 local imageIsDockerIOShort = function(image)
@@ -233,6 +234,107 @@ local grafanaIngress(instanceName, instanceParams) = if instanceParams.grafana.i
     },
   } else {};
 
+// NOTE(mdl): kube-prometheus ships no thanosRuler component
+local thanosRuler(instanceName, instanceParams) =
+  local name = formatComponentName('thanosRuler', instanceName);
+  local metadata = {
+    name: name,
+    namespace: instanceParams.common.namespace,
+  };
+  {
+    thanosRuler: if instanceParams.thanosRuler.enabled then {
+      serviceAccount: {
+        apiVersion: 'v1',
+        kind: 'ServiceAccount',
+        metadata: metadata,
+      },
+      thanosRuler: {
+        apiVersion: 'monitoring.coreos.com/v1',
+        kind: 'ThanosRuler',
+        metadata: metadata,
+        spec: {
+          serviceAccountName: name,
+        } + instanceParams.thanosRuler.config,
+      },
+      serviceMonitor: {
+        apiVersion: 'monitoring.coreos.com/v1',
+        kind: 'ServiceMonitor',
+        metadata: metadata,
+        spec: {
+          namespaceSelector: {
+            matchNames: [
+              instanceParams.common.namespace,
+            ],
+          },
+          selector: {
+            matchLabels: {
+              'operated-thanos-ruler': 'true',
+            },
+          },
+          endpoints: [
+            { port: 'web' },
+          ],
+        },
+      },
+      prometheusRule: {
+        apiVersion: 'monitoring.coreos.com/v1',
+        kind: 'PrometheusRule',
+        metadata: metadata,
+        spec: {
+          groups: [ {
+            name: name,
+            rules: [
+              {
+                alert: 'ThanosRulerDown',
+                expr: 'up{namespace="%s",service="thanos-ruler-operated"} == 0 or absent(up{namespace="%s",service="thanos-ruler-operated"})' % [ instanceParams.common.namespace, instanceParams.common.namespace ],
+                'for': '15m',
+                labels: {
+                  severity: 'critical',
+                },
+                annotations: {
+                  summary: 'Thanos Ruler %s is down, its alert rules are not being evaluated.' % name,
+                },
+              },
+              {
+                alert: 'ThanosRulerRuleEvaluationFailing',
+                expr: 'increase(prometheus_rule_evaluation_failures_total{namespace="%s"}[10m]) > 0' % instanceParams.common.namespace,
+                'for': '15m',
+                labels: {
+                  severity: 'warning',
+                },
+                annotations: {
+                  summary: 'Thanos Ruler %s is failing rule evaluations, alerts may be missed.' % name,
+                },
+              },
+              {
+                alert: 'ThanosRulerIsDroppingAlerts',
+                expr: 'sum(rate(thanos_alert_sender_alerts_dropped_total{namespace="%s"}[5m])) > 0 or sum(rate(thanos_alert_queue_alerts_dropped_total{namespace="%s"}[5m])) > 0' % [ instanceParams.common.namespace, instanceParams.common.namespace ],
+                'for': '5m',
+                labels: {
+                  severity: 'critical',
+                },
+                annotations: {
+                  summary: 'Thanos Ruler %s is dropping alerts instead of delivering them to Alertmanager.' % name,
+                },
+              },
+              {
+                alert: 'ThanosRulerNoEvaluation',
+                expr: 'time() - max by (rule_group) (prometheus_rule_group_last_evaluation_timestamp_seconds{namespace="%s"}) > 10 * max by (rule_group) (prometheus_rule_group_interval_seconds{namespace="%s"})' % [ instanceParams.common.namespace, instanceParams.common.namespace ],
+                'for': '5m',
+                labels: {
+                  severity: 'critical',
+                },
+                annotations: {
+                  summary: 'Thanos Ruler %s has not evaluated a rule group for 10 intervals.' % name,
+                },
+              },
+            ],
+          } ],
+        },
+      },
+    } else {},
+  };
+
 local grafanaStorage(instanceName, instanceParams) = if instanceParams.grafana.persistence.enabled then
   assert instanceParams.grafana.persistence.size != '' : 'Storage size cannot be empty when persistence enabled';
   {
@@ -356,6 +458,7 @@ local stackForInstance = function(instanceName)
       },
     } + patchGrafanaDataSource(instanceName) + patchKubeControlPlaneSelectors(instanceName) + com.makeMergeable(cm),
   }
+  + thanosRuler(instanceName, confWithBase)
   + grafanaStorage(instanceName, confWithBase)
   + grafanaIngress(instanceName, confWithBase)
   + addNodeExporterContainerArgs(instanceName, confWithBase)
