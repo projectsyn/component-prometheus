@@ -26,7 +26,7 @@ spec:
           annotations:
             summary: Thanos Ruler thanosruler-test is failing rule evaluations, alerts
               may be missed.
-          expr: increase(prometheus_rule_evaluation_failures_total{namespace="syn-prometheus"}[10m])
+          expr: increase(prometheus_rule_evaluation_failures_total{namespace="syn-prometheus",service="thanos-ruler-operated"}[10m])
             > 0
           for: 15m
           labels:
@@ -45,8 +45,8 @@ spec:
           annotations:
             summary: Thanos Ruler thanosruler-test has not evaluated a rule group
               for 10 intervals.
-          expr: time() - max by (rule_group) (prometheus_rule_group_last_evaluation_timestamp_seconds{namespace="syn-prometheus"})
-            > 10 * max by (rule_group) (prometheus_rule_group_interval_seconds{namespace="syn-prometheus"})
+          expr: time() - max by (rule_group) (prometheus_rule_group_last_evaluation_timestamp_seconds{namespace="syn-prometheus",service="thanos-ruler-operated"})
+            > 10 * max by (rule_group) (prometheus_rule_group_interval_seconds{namespace="syn-prometheus",service="thanos-ruler-operated"})
           for: 5m
           labels:
             severity: critical

@@ -237,102 +237,124 @@ local grafanaIngress(instanceName, instanceParams) = if instanceParams.grafana.i
 // NOTE(mdl): kube-prometheus ships no thanosRuler component
 local thanosRuler(instanceName, instanceParams) =
   local name = formatComponentName('thanosRuler', instanceName);
+  local namespace = instanceParams.common.namespace;
   local metadata = {
     name: name,
-    namespace: instanceParams.common.namespace,
+    namespace: namespace,
   };
+  local config = instanceParams.thanosRuler.config;
+
+  local serviceName(component) =
+    com.getValueOrDefault(
+      instanceParams[component].config, 'name', formatComponentName(component, instanceName)
+    );
+
+  local configuresEndpoint(fields) = std.any([ std.objectHas(config, f) for f in fields ]);
+  local endpointDefaults =
+    (
+      if instanceParams.prometheus.enabled && !configuresEndpoint([ 'queryEndpoints', 'queryConfig' ]) then {
+        queryEndpoints: [ 'http://prometheus-%s.%s.svc:9090' % [ serviceName('prometheus'), namespace ] ],
+      } else {}
+    ) + (
+      if instanceParams.alertmanager.enabled && !configuresEndpoint([ 'alertmanagersUrl', 'alertmanagersConfig' ]) then {
+        alertmanagersUrl: [ 'http://alertmanager-%s.%s.svc:9093' % [ serviceName('alertmanager'), namespace ] ],
+      } else {}
+    );
+
+  local spec = endpointDefaults + config { serviceAccountName: name };
   {
-    thanosRuler: if instanceParams.thanosRuler.enabled then {
-      serviceAccount: {
-        apiVersion: 'v1',
-        kind: 'ServiceAccount',
-        metadata: metadata,
-      },
-      thanosRuler: {
-        apiVersion: 'monitoring.coreos.com/v1',
-        kind: 'ThanosRuler',
-        metadata: metadata,
-        spec: {
-          serviceAccountName: name,
-        } + instanceParams.thanosRuler.config,
-      },
-      serviceMonitor: {
-        apiVersion: 'monitoring.coreos.com/v1',
-        kind: 'ServiceMonitor',
-        metadata: metadata,
-        spec: {
-          namespaceSelector: {
-            matchNames: [
-              instanceParams.common.namespace,
-            ],
-          },
-          selector: {
-            matchLabels: {
-              'operated-thanos-ruler': 'true',
+    thanosRuler: if instanceParams.thanosRuler.enabled then
+      assert std.objectHas(spec, 'queryEndpoints') || std.objectHas(spec, 'queryConfig') :
+             'thanosRuler of instance `%s` needs `config.queryEndpoints` or `config.queryConfig` when the instance has no Prometheus enabled' % instanceName;
+      {
+        serviceAccount: {
+          apiVersion: 'v1',
+          kind: 'ServiceAccount',
+          metadata: metadata,
+        },
+        thanosRuler: {
+          apiVersion: 'monitoring.coreos.com/v1',
+          kind: 'ThanosRuler',
+          metadata: metadata,
+          spec: spec,
+        },
+        serviceMonitor: {
+          apiVersion: 'monitoring.coreos.com/v1',
+          kind: 'ServiceMonitor',
+          metadata: metadata,
+          spec: {
+            namespaceSelector: {
+              matchNames: [
+                namespace,
+              ],
             },
-          },
-          endpoints: [
-            { port: 'web' },
-          ],
-        },
-      },
-      prometheusRule: {
-        apiVersion: 'monitoring.coreos.com/v1',
-        kind: 'PrometheusRule',
-        metadata: metadata,
-        spec: {
-          groups: [ {
-            name: name,
-            rules: [
-              {
-                alert: 'ThanosRulerDown',
-                expr: 'up{namespace="%s",service="thanos-ruler-operated"} == 0 or absent(up{namespace="%s",service="thanos-ruler-operated"})' % [ instanceParams.common.namespace, instanceParams.common.namespace ],
-                'for': '15m',
-                labels: {
-                  severity: 'critical',
-                },
-                annotations: {
-                  summary: 'Thanos Ruler %s is down, its alert rules are not being evaluated.' % name,
-                },
+            selector: {
+              matchLabels: {
+                'operated-thanos-ruler': 'true',
               },
-              {
-                alert: 'ThanosRulerRuleEvaluationFailing',
-                expr: 'increase(prometheus_rule_evaluation_failures_total{namespace="%s"}[10m]) > 0' % instanceParams.common.namespace,
-                'for': '15m',
-                labels: {
-                  severity: 'warning',
-                },
-                annotations: {
-                  summary: 'Thanos Ruler %s is failing rule evaluations, alerts may be missed.' % name,
-                },
-              },
-              {
-                alert: 'ThanosRulerIsDroppingAlerts',
-                expr: 'sum(rate(thanos_alert_sender_alerts_dropped_total{namespace="%s"}[5m])) > 0 or sum(rate(thanos_alert_queue_alerts_dropped_total{namespace="%s"}[5m])) > 0' % [ instanceParams.common.namespace, instanceParams.common.namespace ],
-                'for': '5m',
-                labels: {
-                  severity: 'critical',
-                },
-                annotations: {
-                  summary: 'Thanos Ruler %s is dropping alerts instead of delivering them to Alertmanager.' % name,
-                },
-              },
-              {
-                alert: 'ThanosRulerNoEvaluation',
-                expr: 'time() - max by (rule_group) (prometheus_rule_group_last_evaluation_timestamp_seconds{namespace="%s"}) > 10 * max by (rule_group) (prometheus_rule_group_interval_seconds{namespace="%s"})' % [ instanceParams.common.namespace, instanceParams.common.namespace ],
-                'for': '5m',
-                labels: {
-                  severity: 'critical',
-                },
-                annotations: {
-                  summary: 'Thanos Ruler %s has not evaluated a rule group for 10 intervals.' % name,
-                },
-              },
+            },
+            endpoints: [
+              { port: 'web' },
             ],
-          } ],
+          },
         },
-      },
-    } else {},
+        prometheusRule: {
+          apiVersion: 'monitoring.coreos.com/v1',
+          kind: 'PrometheusRule',
+          metadata: metadata,
+          spec: {
+            groups: [ {
+              name: name,
+              rules: [
+                {
+                  alert: 'ThanosRulerDown',
+                  expr: 'up{namespace="%s",service="thanos-ruler-operated"} == 0 or absent(up{namespace="%s",service="thanos-ruler-operated"})' % [ namespace, namespace ],
+                  'for': '15m',
+                  labels: {
+                    severity: 'critical',
+                  },
+                  annotations: {
+                    summary: 'Thanos Ruler %s is down, its alert rules are not being evaluated.' % name,
+                  },
+                },
+                {
+                  alert: 'ThanosRulerRuleEvaluationFailing',
+                  expr: 'increase(prometheus_rule_evaluation_failures_total{namespace="%s",service="thanos-ruler-operated"}[10m]) > 0' % namespace,
+                  'for': '15m',
+                  labels: {
+                    severity: 'warning',
+                  },
+                  annotations: {
+                    summary: 'Thanos Ruler %s is failing rule evaluations, alerts may be missed.' % name,
+                  },
+                },
+                {
+                  alert: 'ThanosRulerIsDroppingAlerts',
+                  expr: 'sum(rate(thanos_alert_sender_alerts_dropped_total{namespace="%s"}[5m])) > 0 or sum(rate(thanos_alert_queue_alerts_dropped_total{namespace="%s"}[5m])) > 0' % [ namespace, namespace ],
+                  'for': '5m',
+                  labels: {
+                    severity: 'critical',
+                  },
+                  annotations: {
+                    summary: 'Thanos Ruler %s is dropping alerts instead of delivering them to Alertmanager.' % name,
+                  },
+                },
+                {
+                  alert: 'ThanosRulerNoEvaluation',
+                  expr: 'time() - max by (rule_group) (prometheus_rule_group_last_evaluation_timestamp_seconds{namespace="%s",service="thanos-ruler-operated"}) > 10 * max by (rule_group) (prometheus_rule_group_interval_seconds{namespace="%s",service="thanos-ruler-operated"})' % [ namespace, namespace ],
+                  'for': '5m',
+                  labels: {
+                    severity: 'critical',
+                  },
+                  annotations: {
+                    summary: 'Thanos Ruler %s has not evaluated a rule group for 10 intervals.' % name,
+                  },
+                },
+              ],
+            } ],
+          },
+        },
+      } else {},
   };
 
 local grafanaStorage(instanceName, instanceParams) = if instanceParams.grafana.persistence.enabled then
