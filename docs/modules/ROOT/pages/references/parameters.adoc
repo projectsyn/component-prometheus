@@ -412,6 +412,8 @@ If the same instance has `prometheus.enabled` or `alertmanager.enabled`, `spec.q
 An explicit value in `config` always wins, and the default is skipped entirely when `config` sets the mutually exclusive `queryConfig` resp. `alertmanagersConfig`.
 Set them explicitly to evaluate against, or alert through, another instance or namespace.
 
+NOTE: Depending on the target cluster, evaluating against or alerting through an instance in another namespace may require custom network policies.
+
 Rendering fails if the instance has no Prometheus enabled and `config` sets neither `queryEndpoints` nor `queryConfig`.
 
 == `instances.*.(prometheus|alertmanager|grafana).networkPolicy.additionalIngressRules`
