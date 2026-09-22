@@ -260,6 +260,9 @@ local thanosRuler(instanceName, instanceParams) =
       } else {}
     ) + (
       if instanceParams.alertmanager.enabled && !configuresEndpoint([ 'alertmanagersUrl', 'alertmanagersConfig' ]) then {
+        // NOTE: The CRD recommends using `alertmanagersConfig` for Thanos >=
+        // 0.10.0.  Eventually the default config should probably detect the
+        // Thanos version and adjust the config accordingly.
         alertmanagersUrl: [ 'http://alertmanager-%s.%s.svc:9093' % [ serviceName('alertmanager'), namespace ] ],
       } else {}
     );
