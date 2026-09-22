@@ -253,6 +253,9 @@ local thanosRuler(instanceName, instanceParams) =
   local endpointDefaults =
     (
       if instanceParams.prometheus.enabled && !configuresEndpoint([ 'queryEndpoints', 'queryConfig' ]) then {
+        // NOTE: The CRD recommends using `queryConfig` for Thanos >= 0.11.0.
+        // Eventually the default config should probably detect the Thanos
+        // version and adjust the config accordingly.
         queryEndpoints: [ 'http://prometheus-%s.%s.svc:9090' % [ serviceName('prometheus'), namespace ] ],
       } else {}
     ) + (
