@@ -87,6 +87,7 @@ local secrets = std.foldl(
 local renderInstance = function(instanceName, stack)
   local prometheus = common.render_component(stack, 'prometheus', 20, instanceName);
   local alertmanager = common.render_component(stack, 'alertmanager', 30, instanceName);
+  local thanosRuler = common.render_component(stack, 'thanosRuler', 35, instanceName);
   local grafana = common.render_component(stack, 'grafana', 40, instanceName);
   local nodeExporter = common.render_component(stack, 'nodeExporter', 50, instanceName);
   local blackboxExporter = common.render_component(stack, 'blackboxExporter', 60, instanceName);
@@ -104,7 +105,8 @@ local renderInstance = function(instanceName, stack)
   (if p.kubernetesControlPlane.enabled then kubernetesControlPlane else {}) +
   (if p.prometheusAdapter.enabled then prometheusAdapter else {}) +
   (if p.kubeStateMetrics.enabled then kubeStateMetrics else {}) +
-  (if p.kubePrometheus.enabled then kubePrometheus else {})
+  (if p.kubePrometheus.enabled then kubePrometheus else {}) +
+  (if p.thanosRuler.enabled then thanosRuler else {})
 
 ;
 

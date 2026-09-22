@@ -143,6 +143,10 @@ parameters:
         enabled: false
         config: {}
         overrides: {}
+      thanosRuler:
+        enabled: false
+        config: {}
+        overrides: {}
 
     prometheusOperator:
       enabled: true

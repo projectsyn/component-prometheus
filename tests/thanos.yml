@@ -38,3 +38,19 @@ parameters:
               objectStorageConfig:
                 key: thanos
                 name: thanos-objstore-config
+        alertmanager:
+          enabled: true
+        thanosRuler:
+          enabled: true
+          config:
+            replicas: 1
+            alertmanagersUrl:
+              - http://alertmanager-alertmanager-other.syn-other-monitoring:9093
+            ruleNamespaceSelector:
+              matchExpressions:
+                - key: monitoring.example.com/user
+                  operator: Exists
+          overrides:
+            thanosRuler:
+              spec:
+                evaluationInterval: 1m
