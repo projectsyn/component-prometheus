@@ -68,7 +68,7 @@ parameters:
               receivers:
                 - name: foo
                   opsgenie_configs:
-                    - source: null
+                    - source: x-test-source
               route:
                 routes:
                   - receiver: other
