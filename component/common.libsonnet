@@ -473,7 +473,12 @@ local stackForInstance = function(instanceName)
   }, instanceComponents, {});
 
   withAddons(
-    (import 'kube-prometheus/main.libsonnet') + { values+:: resetAlertManagerConfig },
+    (import 'kube-prometheus/main.libsonnet') + {
+      // NOTE(sg): We apply the component configs here rather than after
+      // applying the addons, so addons (such as alert-routing-discovery) can
+      // actually consume the component configuration.
+      values+:: resetAlertManagerConfig + com.makeMergeable(cm),
+    },
     params.addons
   ) {
     values+:: {
@@ -484,7 +489,7 @@ local stackForInstance = function(instanceName)
         // We need to explicitly handle enabling thanos, as upstream has a "null" in the field, making standard merge impossible
         [if std.objectHas(confWithBase.prometheus.config, 'thanos') then 'thanos']: confWithBase.prometheus.config.thanos,
       },
-    } + patchGrafanaDataSource(instanceName) + patchKubeControlPlaneSelectors(instanceName) + com.makeMergeable(cm),
+    } + patchGrafanaDataSource(instanceName) + patchKubeControlPlaneSelectors(instanceName),
   }
   + thanosRuler(instanceName, confWithBase)
   + grafanaStorage(instanceName, confWithBase)
