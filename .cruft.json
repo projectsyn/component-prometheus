@@ -1,6 +1,6 @@
 {
   "template": "https://github.com/projectsyn/commodore-component-template.git",
-  "commit": "c61b93c6740fb1aaad80e82716a8400d2df31e80",
+  "commit": "e181d48cf389cc0db56825e47044d881c8e91e4d",
   "checkout": "main",
   "context": {
     "cookiecutter": {
@@ -25,7 +25,7 @@
       "github_name": "component-prometheus",
       "github_url": "https://github.com/projectsyn/component-prometheus",
       "_template": "https://github.com/projectsyn/commodore-component-template.git",
-      "_commit": "c61b93c6740fb1aaad80e82716a8400d2df31e80"
+      "_commit": "e181d48cf389cc0db56825e47044d881c8e91e4d"
     }
   },
   "directory": null
