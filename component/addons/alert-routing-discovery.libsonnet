@@ -10,10 +10,9 @@ local params = inv.parameters.prometheus;
     alertmanager+: {
       config: ard.alertmanagerConfig(
         params.addon_configs.alert_routing_discovery,
-        // NOTE(sg): This is evaluated in
-        // 'kube-prometheus/components/alertmanager.libsonnet' after the
-        // kube-prometheus alertmanager component defaults have been underlaid
-        // to `values.alertmanager`.
+        // NOTE(sg): This only evaluates properly when the component
+        // parameters are applied to kube-prometheus before this addon is
+        // applied, cf. `component/common.libsonnet`.
         super.config,
         nullReceiver='__prometheus_null',
         fallbackTeam=params.addon_configs.alert_routing_discovery.fallback_team
